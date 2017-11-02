@@ -7,11 +7,8 @@ import { LONG_TIMEOUT } from './helpers';
 import B from 'bluebird';
 import wd from 'wd';
 import https from 'https';
-import request from 'request';
 import { startServer }  from 'appium-xcuitest-driver';
-import {installSSLCert, uninstallSSLCert} from '../../lib/utils';
-
-const {getDevices} = simctl;
+import { installSSLCert } from '../../lib/utils';
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -47,13 +44,13 @@ describe.skip('killAllSimulators', function () {
   });
 });
 
-describe.only('.installSSLCertificate', function () {
+describe('.installSSLCertificate', function () {
   const pem = B.promisifyAll(require('pem'));
   const HOST = 'localhost';
   const XCUI_PORT = 4998;
   const HTTPS_PORT = 4999;
-  
-  let keys, udid, deviceName, xcuiTestServer;
+
+  let keys, xcuiTestServer;
 
   before(async function () {
     // Create an HTTPS server with a randomly generated certificate
@@ -62,7 +59,7 @@ describe.only('.installSSLCertificate', function () {
     https.createServer({key: keys.serviceKey, cert: keys.certificate}, function (req, res) {
       res.end('If you are seeing this the certificate has been installed');
     }).listen(HTTPS_PORT);
-    
+
     // Start XCUITest server so we can do Safari tests
     xcuiTestServer = await startServer(XCUI_PORT, HOST);
   });
