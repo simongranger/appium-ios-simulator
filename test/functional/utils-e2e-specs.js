@@ -45,6 +45,7 @@ describe.skip('killAllSimulators', function () {
 });
 
 describe('.installSSLCertificate', function () {
+  this.timeout(10 * 60 * 1000);
   const pem = B.promisifyAll(require('pem'));
   const HOST = 'localhost';
   const XCUI_PORT = 4998;
